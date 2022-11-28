@@ -45,18 +45,20 @@ const Product = db.define('product', {
     stock: {
         type: DataTypes.INTEGER,
     },
+    weight: {
+        type: DataTypes.INTEGER,
+    },
     category: {
-        type: DataTypes.JSON,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true,
-            // isArray: true
         }
     },
     image: {
         type: DataTypes.STRING,
     },
-    url: {
+    image_url: {
         type: DataTypes.STRING,
     },
     userId: {

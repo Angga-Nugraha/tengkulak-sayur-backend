@@ -2,6 +2,29 @@ import Users from "../models/user_model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+
+export const register = async (req, res) => {
+    const { name, email, password, confPassword, addres } = req.body;
+    if (password !== confPassword) {
+        return res.status(400).json({ msg: "Password dan ConfPassword tidak cocok" });
+    }
+    const salt = await bcrypt.genSalt();
+    const hasPassword = await bcrypt.hash(password, salt);
+
+    try {
+        await Users.create({
+            name: name,
+            email: email,
+            password: hasPassword,
+            addres: addres
+        });
+        res.json({ msg: "Register berhasil" });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 export const login = async (req, res) => {
     const user = await Users.findOne({
         where: {

@@ -25,6 +25,12 @@ try {
 } catch (error) {
     console.log(error);
 }
+
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:5000'
+}));
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
@@ -35,10 +41,6 @@ app.use(session({
     }
 }));
 
-app.use(cors({
-    credentials: true,
-    origin: 'http://localhost:5000'
-}));
 app.use(cookieParser());
 app.use(FileUpload());
 app.use(express.json());

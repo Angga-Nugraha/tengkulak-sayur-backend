@@ -7,8 +7,8 @@ POST http://localhost:5000/users
 Content-Type: application/json
 
 {  
-    "name": "Angga 2",
-    "email": "angga2@gmail.com",
+    "name": "Angga nugraha",
+    "email": "angga@gmail.com",
     "password": "1234567",
     "confPassword": "1234567"
 }
@@ -32,7 +32,8 @@ DELETE   http://localhost:5000/users/536fc3d5-f3d2-4def-9611-f65f3574f1a6
 #     "password": "",
 #     "confPassword": "",
 # }
-
+###
+GET http://localhost:5000/product?search_query=Bajigur
 ###
 DELETE http://localhost:5000/logout
 
@@ -41,7 +42,7 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "angga2@gmail.com",
+    "email": "hilman@gmail.com",
     "password": "1234567"
 }
 

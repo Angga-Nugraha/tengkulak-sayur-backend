@@ -29,12 +29,26 @@ const Users = db.define('users', {
 
         }
     },
+    addres: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+
+        }
+    },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true,
         }
+    },
+    image: {
+        type: DataTypes.STRING,
+    },
+    image_url: {
+        type: DataTypes.STRING,
     },
     refresh_token: {
         type: DataTypes.TEXT,
