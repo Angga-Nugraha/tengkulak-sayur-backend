@@ -11,15 +11,18 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hasPassword = await bcrypt.hash(password, salt);
 
+
+
     try {
-        await Users.create({
+        const user = await Users.create({
             name: name,
             email: email,
             password: hasPassword,
             addres: addres
         });
-        res.json({ msg: "Register berhasil" });
+        res.status(200).send({ msg: "Register berhasil", data: user });
     } catch (error) {
+        res.status(400).json({ msg: "Email sudah terdaftar" });
         console.log(error);
     }
 }
@@ -37,28 +40,35 @@ export const login = async (req, res) => {
         return res.status(400).json({ msg: "Wroong password" });
     }
     req.session.userId = user.uuid;
+    const id = user.id;
     const uuid = user.uuid;
     const name = user.name;
     const email = user.email;
+    const image = user.image;
+    const addres = user.addres;
 
-    const refreshToken = jwt.sign({ uuid, name, email }, process.env.REFRESH_TOKEN_SECRET, {
+    const refresh_token = jwt.sign({ uuid, name, email }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: '1d'
     });
-    const accessToken = jwt.sign({ uuid, name, email }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '20s'
+    const access_token = jwt.sign({ uuid, name, email }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '1h'
     });
 
-    await Users.update({ refresh_token: refreshToken }, {
+
+    await Users.update({ refresh_token: refresh_token }, {
         where: {
             uuid: uuid
         }
     });
 
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('refreshToken', refresh_token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
     })
-    res.json({ uuid, name, email, accessToken });
+    res.status(200).send({
+        message: "success",
+        data: { id, uuid, name, email, addres, image, refresh_token }
+    });
 
 }
 
@@ -67,7 +77,7 @@ export const me = async (req, res) => {
         return res.status(401).json({ msg: "Mohon login ke akun anda" });
     }
     const user = await Users.findOne({
-        attributes: ['uuid', 'name', 'email'],
+        attributes: ['id', 'uuid', 'name', 'email', 'refresh_token', 'addres'],
         where: {
             uuid: req.session.userId
         }

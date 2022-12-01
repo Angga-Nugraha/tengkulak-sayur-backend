@@ -33,6 +33,23 @@ export const getProductById = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
+
+export const getProductByCategory = async (req, res) => {
+    try {
+        const response = await Product.findAll({
+            where: {
+                category: req.params.category
+            }
+        });
+        res.status(200).send({
+            message: "success",
+            data: response
+        });
+    } catch (error) {
+        res.status(500).json({ msg: error.message });
+    }
+};
+
 export const saveProduct = async (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: "No file uploaded" });
 

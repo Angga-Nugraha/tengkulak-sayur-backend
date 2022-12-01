@@ -5,17 +5,19 @@ import {
     saveProduct,
     updateProduct,
     deleteProduct,
-    searchProduct
+    searchProduct,
+    getProductByCategory
 } from "../controllers/product.js";
-import { verifyUser } from "../middleware/authUser.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-router.get('/product', getProducts);
-router.get('/product/:id', verifyUser, getProductById);
-router.post('/product', verifyUser, saveProduct);
-router.patch('/product/:id', verifyUser, updateProduct);
-router.delete('/product/:id', verifyUser, deleteProduct);
-router.get('/search/product', searchProduct);
+router.get('/product', verifyToken, getProducts);
+router.get('/product/:id', verifyToken, getProductById);
+router.get('/product/category/:category', verifyToken, getProductByCategory);
+router.post('/product', verifyToken, saveProduct);
+router.patch('/product/:id', verifyToken, updateProduct);
+router.delete('/product/:id', verifyToken, deleteProduct);
+router.get('/search/product', verifyToken, searchProduct);
 
 export default router;
