@@ -20,9 +20,9 @@ export const getUserById = async (req, res) => {
             where: {
                 uuid: req.params.id
             },
-            attributes: ['id', 'uuid', 'name', 'email', 'image_url']
+            attributes: ['id', 'uuid', 'name', 'email', 'addres', 'image', 'refresh_token']
         });
-        res.status(200).json(responses)
+        res.status(200).send({ msg: 'success', data: responses, })
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }

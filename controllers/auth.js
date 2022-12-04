@@ -50,9 +50,6 @@ export const login = async (req, res) => {
     const refresh_token = jwt.sign({ uuid, name, email }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: '1d'
     });
-    const access_token = jwt.sign({ uuid, name, email }, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: '1h'
-    });
 
 
     await Users.update({ refresh_token: refresh_token }, {
@@ -72,25 +69,11 @@ export const login = async (req, res) => {
 
 }
 
-export const me = async (req, res) => {
-    if (!req.session.userId) {
-        return res.status(401).json({ msg: "Mohon login ke akun anda" });
-    }
-    const user = await Users.findOne({
-        attributes: ['id', 'uuid', 'name', 'email', 'refresh_token', 'addres'],
-        where: {
-            uuid: req.session.userId
-        }
-    });
-    if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
-    res.status(200).json({ user });
-}
-
 export const logout = (req, res) => {
     req.session.destroy(async (err) => {
         if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
 
-        const refreshToken = req.cookies.refreshToken;
+        const refreshToken = req.headers['cookie'];
         if (!refreshToken) return res.sendStatus(204);
         const user = await Users.findOne({
             where: {
@@ -99,6 +82,7 @@ export const logout = (req, res) => {
         });
         if (!user) return res.sendStatus(204);
         const uuid = user.uuid;
+
         await Users.update({ refresh_token: null }, {
             where: {
                 uuid: uuid

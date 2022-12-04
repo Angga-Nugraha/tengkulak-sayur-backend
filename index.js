@@ -28,7 +28,7 @@ try {
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:5000'
+    origin: '*'
 }));
 
 app.use(session({
@@ -37,7 +37,6 @@ app.use(session({
     saveUninitialized: true,
     store: store,
     cookie: {
-        maxAge: 1000 * 60 * 60,
         secure: 'auto'
     }
 }));
@@ -51,6 +50,6 @@ app.use(productRouter);
 app.use(authRouter);
 // store.sync();
 
-app.listen(process.env.APP_PORT || 5000, () => {
+app.listen(process.env.APP_PORT, () => {
     console.log(`Server up and running...`);
 });
