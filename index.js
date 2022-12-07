@@ -48,8 +48,11 @@ app.use(express.static('public'));
 app.use(userRouter);
 app.use(productRouter);
 app.use(authRouter);
+app.use("/", (req, res) => {
+    res.send('welcome to home page');
+});
 // store.sync();
 
-app.listen(process.env.APP_PORT, () => {
+app.listen(process.env.APP_PORT || 5000, () => {
     console.log(`Server up and running...`);
 });
