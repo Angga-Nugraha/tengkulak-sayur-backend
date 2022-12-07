@@ -50,6 +50,7 @@ app.use(productRouter);
 app.use(authRouter);
 // store.sync();
 
-app.listen(process.env.APP_PORT, () => {
+const PORT = 5000;
+app.listen(process.env.APP_PORT || PORT, () => {
     console.log(`Server up and running...`);
 });
