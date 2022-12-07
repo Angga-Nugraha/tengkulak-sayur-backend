@@ -53,6 +53,6 @@ app.use("/", (req, res) => {
 });
 // store.sync();
 const PORT = 5000;
-app.listen(process.env.APP_PORT || PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
     console.log(`Server up and running...`);
 });
