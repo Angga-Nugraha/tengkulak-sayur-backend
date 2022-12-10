@@ -86,7 +86,6 @@ export const register = async (req, res) => {
         });
         res.status(200).send({ msg: "Register berhasil", data: user });
     } catch (error) {
-        res.status(400).json({ msg: "Email sudah terdaftar" });
         console.log(error);
     }
 }
