@@ -45,17 +45,9 @@ const Users = db.define('users', {
     },
     image: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
     },
     image_url: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
     },
     refresh_token: {
         type: DataTypes.TEXT,
