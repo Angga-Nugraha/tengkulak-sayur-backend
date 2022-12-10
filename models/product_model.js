@@ -53,7 +53,6 @@ const Product = db.define('product', {
         allowNull: false,
         validate: {
             notEmpty: true,
-            // isArray: true
         }
     },
     image: {
