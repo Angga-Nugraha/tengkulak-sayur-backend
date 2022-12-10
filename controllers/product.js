@@ -1,7 +1,8 @@
 import path from "path";
 import fs from "fs";
 import Product from "../models/product_model.js";
-import Users from "../models/user_model.js";
+import Sequelize from "sequelize";
+const Op = Sequelize.Op;
 
 export const getProducts = async (req, res) => {
     try {
