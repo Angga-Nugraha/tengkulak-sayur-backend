@@ -189,3 +189,51 @@ export const deleteProduct = async (req, res) => {
         console.log(error.message);
     }
 };
+
+export const searchProduct = async (req, res) => {
+    const search = req.query.search || "";
+    const page = parseInt(req.query.page) || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = limit * page;
+    try {
+        const rows = await Product.count({
+            where: {
+                [Op.or]: [{
+                    title: {
+                        [Op.like]: '%' + search + '%'
+                    }
+                }, {
+                    category: {
+                        [Op.like]: '%' + search + '%'
+                    }
+                }]
+            }
+        });
+        const data = await Product.findAll({
+            where: {
+                [Op.or]: [{
+                    title: {
+                        [Op.like]: `${search}`
+                    }
+                }, {
+                    category: {
+                        [Op.like]: `${search}`
+                    }
+                }]
+            },
+            offset: offset,
+            limit: limit,
+            order: [
+                ['id', 'DESC']
+            ]
+        });
+        res.json({
+            message: "success",
+            data: data,
+            limit: limit,
+            total: rows
+        });
+    } catch (error) {
+        res.status(500).send({ msg: error.message });
+    }
+}
