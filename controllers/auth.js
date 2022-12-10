@@ -14,34 +14,44 @@ export const login = async (req, res) => {
         return res.status(400).json({ msg: "Wroong password" });
     }
     req.session.userId = user.uuid;
-    const id = user.id;
     const uuid = user.uuid;
     const name = user.name;
     const email = user.email;
-    const image = user.image;
-    const addres = user.addres;
 
-    const refresh_token = jwt.sign({ uuid, name, email }, process.env.REFRESH_TOKEN_SECRET, {
+    const refreshToken = jwt.sign({ uuid, name, email }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: '1d'
     });
+    const accessToken = jwt.sign({ uuid, name, email }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '20s'
+    });
 
-
-    await Users.update({ refresh_token: refresh_token }, {
+    await Users.update({ refresh_token: refreshToken }, {
         where: {
             uuid: uuid
         }
     });
 
-    res.cookie('refreshToken', refresh_token, {
+    res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
     })
-    res.status(200).send({
-        message: "success",
-        data: { id, uuid, name, email, addres, image, refresh_token }
-    });
+    res.json({ uuid, name, email, accessToken });
+
 }
 
+export const me = async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ msg: "Mohon login ke akun anda" });
+    }
+    const user = await Users.findOne({
+        attributes: ['uuid', 'name', 'email'],
+        where: {
+            uuid: req.session.userId
+        }
+    });
+    if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+    res.status(200).json({ user });
+}
 
 export const logout = (req, res) => {
     req.session.destroy(async (err) => {
@@ -65,28 +75,4 @@ export const logout = (req, res) => {
 
         return res.json({ msg: "Logout berhasil" });
     });
-}
-
-export const register = async (req, res) => {
-    const { name, email, password, confPassword, addres } = req.body;
-    if (password !== confPassword) {
-        return res.status(400).json({ msg: "Password dan ConfPassword tidak cocok" });
-    }
-    const salt = await bcrypt.genSalt();
-    const hasPassword = await bcrypt.hash(password, salt);
-
-
-
-    try {
-        const user = await Users.create({
-            name: name,
-            email: email,
-            password: hasPassword,
-            addres: addres
-        });
-        res.status(200).send({ msg: "Register berhasil", data: user });
-    } catch (error) {
-        res.status(400).json({ msg: "Email sudah terdaftar" });
-        console.log(error);
-    }
 }

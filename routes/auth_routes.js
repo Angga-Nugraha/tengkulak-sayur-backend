@@ -1,16 +1,16 @@
 import express from "express";
 import {
-
+    me,
     login,
-    logout,
-    register
+    logout
 } from "../controllers/auth.js";
+import { refreshToken } from "../controllers/refreshToken.js";
 
 const router = express.Router();
 
-router.post('/register', register);
+router.get('/me', me);
 router.post('/login', login);
 router.delete('/logout', logout);
-
+router.get('/token', refreshToken);
 
 export default router;
