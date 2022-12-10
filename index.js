@@ -48,9 +48,7 @@ app.use(express.static('public'));
 app.use(userRouter);
 app.use(productRouter);
 app.use(authRouter);
-app.use("/", (req, res) => {
-    res.send('welcome to home page');
-});
+
 // store.sync();
 const PORT = 5000;
 app.listen(process.env.PORT || PORT, () => {
