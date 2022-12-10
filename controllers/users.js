@@ -60,11 +60,17 @@ export const updateUser = async (req, res) => {
 
             const filepath = `./public/user/${user.image}`;
             fs.exists(filepath, (exists) => {
-                if (exists) fs.unlinkSync(filepath)
+                if (exists) {
+
+                    fs.unlinkSync(filepath)
+                } else {
+
+                    file.mv(`./public/user/${filename}`, (err) => {
+                        if (err) return res.status(500).json({ msg: err.message });
+                    });
+                }
             });
-            file.mv(`./public/user/${filename}`, (err) => {
-                if (err) return res.status(500).json({ msg: err.message });
-            });
+
         }
         const url = `${req.protocol}://${req.get("host")}/user/${filename}`;
         let hashPassword;
