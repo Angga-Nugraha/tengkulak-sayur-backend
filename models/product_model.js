@@ -59,7 +59,7 @@ const Product = db.define('product', {
     image: {
         type: DataTypes.STRING,
     },
-    url: {
+    image_url: {
         type: DataTypes.STRING,
     },
     userId: {

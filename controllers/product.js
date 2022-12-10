@@ -63,7 +63,7 @@ export const saveProduct = (req, res) => {
                 weigth: weigth,
                 category: category,
                 image: filename,
-                url: url,
+                image_url: url,
                 userId: userId
             });
             res.status(201).json({ msg: "Product created" });
