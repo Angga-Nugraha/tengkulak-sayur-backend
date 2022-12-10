@@ -49,7 +49,7 @@ const Product = db.define('product', {
         type: DataTypes.INTEGER,
     },
     category: {
-        type: DataTypes.JSON,
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notEmpty: true,
@@ -64,10 +64,6 @@ const Product = db.define('product', {
     },
     userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
     },
 }, {
     freezeTableName: true
