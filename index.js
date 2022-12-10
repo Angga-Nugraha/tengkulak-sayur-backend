@@ -21,7 +21,7 @@ const store = new sessionStore({
 try {
     await db.authenticate();
     console.log('Database connected...');
-    // db.sync();
+    db.sync();
 } catch (error) {
     console.log(error);
 }
@@ -46,7 +46,7 @@ app.use(express.static('public'));
 app.use(userRouter);
 app.use(productRouter);
 app.use(authRouter);
-// store.sync();
+store.sync();
 
 app.listen(process.env.APP_PORT, () => {
     console.log(`Server up and running...`);

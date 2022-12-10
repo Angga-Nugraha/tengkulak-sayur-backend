@@ -28,6 +28,13 @@ const Users = db.define('users', {
             isEmail: true,
 
         }
+    }, addres: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+
+        }
     },
     password: {
         type: DataTypes.STRING,
@@ -35,6 +42,12 @@ const Users = db.define('users', {
         validate: {
             notEmpty: true,
         }
+    },
+    image: {
+        type: DataTypes.STRING,
+    },
+    image_url: {
+        type: DataTypes.STRING,
     },
     refresh_token: {
         type: DataTypes.TEXT,
