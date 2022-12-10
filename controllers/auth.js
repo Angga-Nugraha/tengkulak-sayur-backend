@@ -35,7 +35,10 @@ export const login = async (req, res) => {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
     })
-    res.json({ uuid, name, email, accessToken });
+    res.send({
+        status: 'success',
+        data: { uuid, name, email, accessToken }
+    });
 
 }
 
