@@ -66,3 +66,27 @@ export const logout = (req, res) => {
         return res.json({ msg: "Logout berhasil" });
     });
 }
+
+export const register = async (req, res) => {
+    const { name, email, password, confPassword, addres } = req.body;
+    if (password !== confPassword) {
+        return res.status(400).json({ msg: "Password dan ConfPassword tidak cocok" });
+    }
+    const salt = await bcrypt.genSalt();
+    const hasPassword = await bcrypt.hash(password, salt);
+
+
+
+    try {
+        const user = await Users.create({
+            name: name,
+            email: email,
+            password: hasPassword,
+            addres: addres
+        });
+        res.status(200).send({ msg: "Register berhasil", data: user });
+    } catch (error) {
+        res.status(400).json({ msg: "Email sudah terdaftar" });
+        console.log(error);
+    }
+}
