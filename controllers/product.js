@@ -58,7 +58,7 @@ export const saveProduct = (req, res) => {
     const ratting = req.body.ratting;
     const stock = req.body.stock;
     const weight = req.body.weight;
-    const category = [req.body.category];
+    const category = req.body.category;
     const file = req.files.file;
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
