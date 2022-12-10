@@ -63,10 +63,6 @@ const Product = db.define('product', {
     },
     userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-        }
     },
 }, {
     freezeTableName: true
