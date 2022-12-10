@@ -1,10 +1,7 @@
 import { Sequelize } from "sequelize";
 
 
-const db = new Sequelize('tengkulak_db', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql'
-});
+const db = new Sequelize(process.env.MYSQL_URL, { dialect: 'mysql' });
 
 
 export default db
