@@ -4,7 +4,6 @@ import {
     getUserById,
     updateUser,
     deleteUser,
-    register
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -14,6 +13,6 @@ router.get('/users', verifyToken, getUser);
 router.get('/users/:id', verifyToken, getUserById);
 router.patch('/users/:id', verifyToken, updateUser);
 router.delete('/users/:id', verifyToken, deleteUser);
-router.post('/users', register);
+
 
 export default router;
