@@ -60,10 +60,7 @@ const Product = db.define('product', {
     },
     image_url: {
         type: DataTypes.STRING,
-    },
-    userId: {
-        type: DataTypes.INTEGER,
-    },
+    }
 }, {
     freezeTableName: true
 });
