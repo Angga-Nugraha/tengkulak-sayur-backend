@@ -36,7 +36,7 @@ export const saveProduct = (req, res) => {
     const discount = req.body.discount;
     const ratting = req.body.ratting;
     const stock = req.body.stock;
-    const weigth = req.body.weigth;
+    const weight = req.body.weight;
     const category = [req.body.category];
     const file = req.files.file;
     const fileSize = file.data.length;
@@ -60,7 +60,7 @@ export const saveProduct = (req, res) => {
                 discount: discount,
                 ratting: ratting,
                 stock: stock,
-                weigth: weigth,
+                weight: weight,
                 category: category,
                 image: filename,
                 image_url: url,

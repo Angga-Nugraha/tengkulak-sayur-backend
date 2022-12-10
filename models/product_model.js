@@ -45,7 +45,7 @@ const Product = db.define('product', {
     stock: {
         type: DataTypes.INTEGER,
     },
-    weigth: {
+    weight: {
         type: DataTypes.INTEGER,
     },
     category: {
