@@ -18,9 +18,9 @@ export const getUserById = async (req, res) => {
             where: {
                 uuid: req.params.id
             },
-            attributes: ['id', 'uuid', 'name', 'email']
+            attributes: ['id', 'uuid', 'name', 'email', 'addres', 'image', 'refresh_token']
         });
-        res.status(200).json(responses)
+        res.status(200).send({ msg: 'success', data: responses, })
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
@@ -36,7 +36,9 @@ export const updateUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ msg: "User tidak ditemukan" });
         }
+
         const { name, email, addres, password, confPassword } = req.body;
+
         let filename = "";
         if (req.files == null) {
             filename = Users.image;
@@ -63,7 +65,6 @@ export const updateUser = async (req, res) => {
             });
         }
         const url = `${req.protocol}://${req.get("host")}/user/${filename}`;
-
         let hashPassword;
         if (password === "" || password === null) {
             hashPassword = user.password;
@@ -121,21 +122,25 @@ export const deleteUser = async (req, res) => {
 }
 
 export const register = async (req, res) => {
-    const { name, email, password, confPassword } = req.body;
+    const { name, email, password, confPassword, addres } = req.body;
     if (password !== confPassword) {
         return res.status(400).json({ msg: "Password dan ConfPassword tidak cocok" });
     }
     const salt = await bcrypt.genSalt();
     const hasPassword = await bcrypt.hash(password, salt);
 
+
+
     try {
-        await Users.create({
+        const user = await Users.create({
             name: name,
             email: email,
-            password: hasPassword
+            password: hasPassword,
+            addres: addres
         });
-        res.json({ msg: "Register berhasil" });
+        res.status(200).send({ msg: "Register berhasil", data: user });
     } catch (error) {
+        res.status(400).json({ msg: "Email sudah terdaftar" });
         console.log(error);
     }
 }
