@@ -2,32 +2,6 @@ import Users from "../models/user_model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
-export const register = async (req, res) => {
-    const { name, email, password, confPassword, addres } = req.body;
-    if (password !== confPassword) {
-        return res.status(400).json({ msg: "Password dan ConfPassword tidak cocok" });
-    }
-    const salt = await bcrypt.genSalt();
-    const hasPassword = await bcrypt.hash(password, salt);
-
-
-
-    try {
-        const user = await Users.create({
-            name: name,
-            email: email,
-            password: hasPassword,
-            addres: addres
-        });
-        res.status(200).send({ msg: "Register berhasil", data: user });
-    } catch (error) {
-        res.status(400).json({ msg: "Email sudah terdaftar" });
-        console.log(error);
-    }
-}
-
-
 export const login = async (req, res) => {
     const user = await Users.findOne({
         where: {
@@ -66,14 +40,14 @@ export const login = async (req, res) => {
         message: "success",
         data: { id, uuid, name, email, addres, image, refresh_token }
     });
-
 }
+
 
 export const logout = (req, res) => {
     req.session.destroy(async (err) => {
         if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
 
-        const refreshToken = req.headers['cookie'];
+        const refreshToken = req.cookies.refreshToken;
         if (!refreshToken) return res.sendStatus(204);
         const user = await Users.findOne({
             where: {
@@ -82,7 +56,6 @@ export const logout = (req, res) => {
         });
         if (!user) return res.sendStatus(204);
         const uuid = user.uuid;
-
         await Users.update({ refresh_token: null }, {
             where: {
                 uuid: uuid
