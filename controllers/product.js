@@ -53,7 +53,7 @@ export const getProductByCategory = async (req, res) => {
 export const saveProduct = async (req, res) => {
     if (req.files === null) return res.status(400).json({ msg: "No file uploaded" });
 
-    const userId = req.userId;
+    const userId = req.session.userId;
     const name = req.body.title;
     const desc = req.body.description;
     const price = req.body.price;

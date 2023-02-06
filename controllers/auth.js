@@ -39,13 +39,13 @@ export const login = async (req, res) => {
     if (!match) {
         return res.status(400).json({ msg: "Wroong password" });
     }
-    req.session.userId = user.uuid;
     const id = user.id;
     const uuid = user.uuid;
     const name = user.name;
     const email = user.email;
     const image = user.image;
     const addres = user.addres;
+    req.session.userId = user.id;
 
     const refresh_token = jwt.sign({ uuid, name, email }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: '1d'
